@@ -1,0 +1,28 @@
+# --- Unity generated folders (never commit) ---
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild*/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+
+# --- IDE/Editor specific ---
+.vs/
+.idea/
+*.csproj
+*.sln
+*.user
+*.userprefs
+
+# --- Crash/diagnostics ---
+sysinfo.txt
+
+# --- Packages we usually don't commit ---
+*.unitypackage
+*.apk
+*.aab
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
