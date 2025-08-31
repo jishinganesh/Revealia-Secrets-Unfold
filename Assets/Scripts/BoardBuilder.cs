@@ -10,6 +10,7 @@ public class BoardBuilder : MonoBehaviour
     public GameObject cardPrefab;
 
     public GameObject gameOverpannel;
+    public GameObject backbutton;
 
     [Header("Parent with GridLayoutGroup")]
     public GridLayoutGroup gridLayout;
@@ -91,7 +92,7 @@ public class BoardBuilder : MonoBehaviour
                 card.SetFrontSprite(frontSprites[ids[i]]);
         }
 
-        Debug.Log($"✅ Built {rows}x{columns} board with {totalPairs} pairs.");
+        Debug.Log($" Built {rows}x{columns} board with {totalPairs} pairs.");
     }
 
     public void retry()
@@ -99,8 +100,8 @@ public class BoardBuilder : MonoBehaviour
         BuildBoard(lastRow, lastColumns);
 
 
-        if(gameOverpannel != null)
-        gameOverpannel.SetActive(false);
+        if (gameOverpannel != null)
+            gameOverpannel.SetActive(false);
     }
 
     private void Shuffle(List<int> list)
@@ -139,10 +140,15 @@ public class BoardBuilder : MonoBehaviour
             matchedPairs++;
             Debug.Log($" Pair matched! {matchedPairs}/{totalPairs}");
 
+            AudioManager.Instance.PlaySound(AudioManager.Instance.matchCard);
+
             if (matchedPairs >= totalPairs)
             {
                 if (gameOverpannel != null)
                     gameOverpannel.SetActive(true);
+                    backbutton.SetActive(false);
+
+                AudioManager.Instance.PlaySound(AudioManager.Instance.gameOver);
             }
 
         }
@@ -150,6 +156,8 @@ public class BoardBuilder : MonoBehaviour
         {
             a.ShowBack();
             b.ShowBack();
+            
+            AudioManager.Instance.PlaySound(AudioManager.Instance.mismatchCard);
         }
     }
     

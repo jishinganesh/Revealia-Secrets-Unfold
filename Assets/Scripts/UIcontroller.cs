@@ -9,6 +9,7 @@ public class UIcontroller : MonoBehaviour
     public GameObject gamePannel;
     public GameObject backButton;
     public GameObject gameOverpannel;
+    public AudioClip buttonClickSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,4 +35,10 @@ public class UIcontroller : MonoBehaviour
         backButton.SetActive(false);
         gameOverpannel.SetActive(false);
     }
+
+    public void buttonclicksound()
+    {
+        AudioManager.Instance.PlaySound(buttonClickSound);
+    }
+
 }

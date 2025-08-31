@@ -40,6 +40,8 @@ public class CardFlip : MonoBehaviour
         cardFront.SetActive(true);
         cardBack.SetActive(false);
         isFlipped = true;
+
+        AudioManager.Instance.PlaySound(AudioManager.Instance.flipCard);
     }
 
     public void ShowBack()
