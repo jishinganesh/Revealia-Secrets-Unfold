@@ -7,58 +7,56 @@ public class CardFlip : MonoBehaviour
 
 {
     [Header("Card Faces")]
-    public GameObject cardFront; // child "CardFront"
-    public GameObject cardBack;  // child "CardBack"
+    public GameObject cardFront; 
+    public GameObject cardBack;  
 
     [Header("Front Image")]
-    public Image frontImage; // assign the Image component of CardFront in the Inspector
+    public Image frontImage;
 
-    [HideInInspector] public int cardId;   // ID for matching
-    [HideInInspector] public BoardBuilder manager; // who spawned this card
+    [HideInInspector] public int cardId;   
+    [HideInInspector] public BoardBuilder manager; 
 
-    private bool isFlipped = false;
     private bool isMatched = false;
+    private CardAnimation animationScript;
+
+    void Awake()
+    {
+        animationScript = GetComponent<CardAnimation>(); // Get the animation script
+    }
 
     void Start()
     {
-        ShowBack(); // default = back side
+        ShowBack(); // default back
     }
 
     public void OnClick()
     {
-        if (isMatched || isFlipped) return; // don't flip matched or already open
+        if (isMatched || animationScript.IsAnimating() || animationScript.IsFrontVisible()) return;
 
-        ShowFront();
+        // Flip with animation
+        animationScript.Flip(true);
 
-        // tell the manager this card was revealed
+        // play flip sound
+        if (AudioManager.Instance != null && AudioManager.Instance.flipCard != null)
+            AudioManager.Instance.PlaySound(AudioManager.Instance.flipCard);
+
+        // notify manager
         if (manager != null)
             manager.OnCardRevealed(this);
     }
 
-    private void ShowFront()
-    {
-        cardFront.SetActive(true);
-        cardBack.SetActive(false);
-        isFlipped = true;
-
-        AudioManager.Instance.PlaySound(AudioManager.Instance.flipCard);
-    }
-
     public void ShowBack()
     {
-        cardFront.SetActive(false);
-        cardBack.SetActive(true);
-        isFlipped = false;
+        if (!animationScript.IsAnimating())
+            animationScript.Flip(false);
     }
 
     public void MarkMatched()
     {
         isMatched = true;
-        // (optional) tint green to show it's matched
-       
     }
 
-    // ⭐ NEW: BoardBuilder calls this when spawning
+    // Set sprite from BoardBuilder
     public void SetFrontSprite(Sprite sprite)
     {
         if (frontImage != null)
